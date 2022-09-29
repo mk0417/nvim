@@ -38,19 +38,19 @@ return function()
                             })
 
   require('telescope').load_extension('fzf')
-  require('telescope').load_extension('live_grep_raw')
+  require('telescope').load_extension('live_grep_args')
   require('telescope').load_extension('project')
 
   nnoremap('<leader>fr', ':Telescope oldfiles<CR>')
   nnoremap('<leader>sf', ':Telescope find_files<CR>')
   nnoremap('<leader>sd', ':Telescope live_grep<CR>')
   nnoremap('<leader>sD', ':Telescope grep_string<CR>')
-  nnoremap('<leader>sr', ':Telescope live_grep_raw<CR>')
+  nnoremap('<leader>sr', ':Telescope live_grep_args<CR>')
   nnoremap('<leader>pp', ':Telescope project<CR>')
 
   -- Working directory should respect to current file
   nnoremap('<leader>lf', ":lua require('telescope.builtin').find_files({cwd=require('telescope.utils').buffer_dir()})<CR>")
   nnoremap("<leader>ld", ":lua require('telescope.builtin').live_grep({cwd=require('telescope.utils').buffer_dir()})<CR>")
   nnoremap("<leader>lD", ":lua require('telescope.builtin').grep_string({cwd=require('telescope.utils').buffer_dir()})<CR>")
-  nnoremap("<leader>lr", ":lua require('telescope').extensions.live_grep_raw.live_grep_raw({cwd=require('telescope.utils').buffer_dir()})<CR>")
+  nnoremap("<leader>lr", ":lua require('telescope').extensions.live_grep_args.live_grep_args({cwd=require('telescope.utils').buffer_dir()})<CR>")
 end

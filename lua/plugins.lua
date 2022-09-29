@@ -45,7 +45,7 @@ return packer.startup(function(use)
         requires = {
           'nvim-lua/popup.nvim',
           'nvim-lua/plenary.nvim',
-          'nvim-telescope/telescope-live-grep-raw.nvim',
+          'nvim-telescope/telescope-live-grep-args.nvim',
           'nvim-telescope/telescope-project.nvim'
         },
         config = require("config.telescope")
