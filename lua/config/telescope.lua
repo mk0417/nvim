@@ -1,56 +1,72 @@
 return function()
-  local setkey = require('utils')
-  local nnoremap = setkey.nnoremap
+    local actions = require('telescope.actions')
+    local builtin = require("telescope.builtin")
+    local fb_actions = require "telescope".extensions.file_browser.actions
+    local function telescope_buffer_dir()
+        return vim.fn.expand('%:p:h')
+    end
+    local map = vim.keymap.set
 
-  require('telescope').setup(
-    {
-      defaults = {
-        preview = false,
-        sorting_strategy = "ascending",
-        layout_config = {
-          horizontal ={
-            height = 30,
-            prompt_position = "top"
-          }
-        }
-      },
-      pickers = {
-        find_files = {
-          theme = "ivy"
+    require('telescope').setup({
+        defaults = {
+            initial_mode = "normal",
+            mappings = {
+                n = {
+                    ["q"] = actions.close,
+                    ["<C-g>"] = actions.close
+                },
+                i = {
+                    ["<C-g>"] = actions.close
+                }
+            }
         },
-        oldfiles = {
-          theme = "ivy"
+        extensions = {
+            file_browser = {
+                theme = "dropdown",
+                -- Disables netrw and use telescope-file-browser in its place
+                hijack_netrw = true,
+                mappings = {
+                    ["i"] = {
+                        ["<C-w>"] = function() vim.cmd('normal vbd') end
+                    },
+                    ["n"] = {
+                        ["N"] = fb_actions.create,
+                        ["h"] = fb_actions.goto_parent_dir,
+                        ["/"] = function()
+                            vim.cmd('startinsert')
+                        end
+                    }
+                }
+            }
         }
-      },
-      extensions = {
-        fzf = {
-          -- false will only do exact matching
-          fuzzy = true,
-          -- override the generic sorter
-          override_generic_sorter = true,
-          -- override the file sorter
-          override_file_sorter = true,
-          -- the default case_mode is "smart_case"
-          -- or "ignore_case" or "respect_case"
-          case_mode = "smart_case"
-        }
-      }
-                            })
+    })
 
-  require('telescope').load_extension('fzf')
-  require('telescope').load_extension('live_grep_args')
-  require('telescope').load_extension('project')
+    require("telescope").load_extension("file_browser")
+    require("telescope").load_extension("fzf")
+    require("telescope").load_extension("project")
 
-  nnoremap('<leader>fr', ':Telescope oldfiles<CR>')
-  nnoremap('<leader>sf', ':Telescope find_files<CR>')
-  nnoremap('<leader>sd', ':Telescope live_grep<CR>')
-  nnoremap('<leader>sD', ':Telescope grep_string<CR>')
-  nnoremap('<leader>sr', ':Telescope live_grep_args<CR>')
-  nnoremap('<leader>pp', ':Telescope project<CR>')
-
-  -- Working directory should respect to current file
-  nnoremap('<leader>lf', ":lua require('telescope.builtin').find_files({cwd=require('telescope.utils').buffer_dir()})<CR>")
-  nnoremap("<leader>ld", ":lua require('telescope.builtin').live_grep({cwd=require('telescope.utils').buffer_dir()})<CR>")
-  nnoremap("<leader>lD", ":lua require('telescope.builtin').grep_string({cwd=require('telescope.utils').buffer_dir()})<CR>")
-  nnoremap("<leader>lr", ":lua require('telescope').extensions.live_grep_args.live_grep_args({cwd=require('telescope.utils').buffer_dir()})<CR>")
+    map("n", "<leader>ff", function()
+        require 'telescope'.extensions.file_browser.file_browser({
+            path = "%:p:h",
+            cwd = telescope_buffer_dir(),
+            respect_gitignore = false,
+            hidden = true,
+            grouped = true,
+            previewer = false,
+            initial_mode = "normal",
+            layout_config = {height = 30}
+        })
+    end)
+    map('n', '<leader>f.',
+    function()
+        builtin.find_files({
+            no_ignore = false,
+            hidden = true
+        })
+    end)
+    map('n', '<leader>fr', function() builtin.oldfiles() end)
+    map('n', ';;', function() builtin.resume() end)
+    map('n', '<leader>bb', function() builtin.buffers() end)
+    map('n', '<leader>sp', function() builtin.live_grep() end)
+    map('n', '<leader>sa', function() builtin.grep_string() end)
 end

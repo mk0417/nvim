@@ -1,25 +1,25 @@
 return function()
-  local g = vim.g
-  local cmd = vim.cmd
-  local iron = require('iron')
+  local iron = require('iron.core')
 
-  -- g.iron_map_defaults = 0
-
-  -- g:iron_repl_open_cmd = 'topright vertical 100 split'
-
-  iron.core.set_config {
-    iron_map_defaults = 0,
-    repl_open_cmd = "rightbelow vertical 100 split",
-    preferred = {
-      python  = 'ipython'
-    }
+  iron.setup {
+      config = {
+          scratch_repl = false,
+          repl_definition = {
+              python = {
+                  command = "ipython --no-autoindent"
+              }
+          },
+          repl_open_cmd = 'belowright 30 split'
+      },
+      keymaps = {
+          visual_send = ";jr",
+          send_line = ";je",
+          cr = ";jk",
+          interrupt = ";jI",
+          exit = ";jq",
+          clear = ";jc",
+      },
+      -- ignore blank lines when sending visual select lines
+      ignore_blank_lines = false
   }
-
-  cmd [[autocmd Filetype python nnoremap ;jj :IronRepl<cr><Esc>]]
-  cmd [[autocmd Filetype python nnoremap ;jR :IronRestart<cr><Esc>]]
-  cmd [[autocmd Filetype python vmap ;jr <Plug>(iron-visual-send)]]
-  cmd [[autocmd Filetype python nmap ;jr <Plug>(iron-send-line)]]
-  cmd [[autocmd Filetype python nmap ;jI <plug>(iron-interrupt)]]
-  cmd [[autocmd Filetype python nmap ;jq <Plug>(iron-exit)]]
-  cmd [[autocmd Filetype python nmap ;jc <Plug>(iron-clear)]]
 end

@@ -1,15 +1,13 @@
-local g = vim.g
-local cmd = vim.cmd
+--[[ init.lua ]]
 
--- Leader/local leader
-g.mapleader = " "
-g.maplocalleader = ";"
+-- Leader
+vim.g.mapleader = " "
 
--- Working directory respects to opened file
--- cmd [[autocmd BufEnter * lcd %:p:h]]
-
-cmd [[autocmd BufRead,BufNewFile *.py setlocal textwidth=80 colorcolumn=80]]
-
+-- Plugins
 require('plugins')
+-- Better defaults
 require('defaults')
+-- Keybindings
 require('keybindings')
+
+print('Hello Peng')
