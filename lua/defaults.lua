@@ -1,4 +1,5 @@
 --[[ defaults.lua ]]
+
 local g = vim.g
 local wo = vim.wo
 local opt = vim.opt
@@ -50,7 +51,7 @@ opt.splitbelow = true
 -- CMD
 opt.showcmd = true
 -- CMD height
-opt.cmdheight = 1
+opt.cmdheight = 2
 -- Disable backup
 opt.backup = false
 -- Autoindent
@@ -67,6 +68,8 @@ opt.wildoptions = 'pum'
 opt.pumblend = 5
 opt.pumheight = 10
 opt.pumwidth = 10
+
+opt.autochdir = true
 
 -- Highlight yanked text 
 cmd [[
